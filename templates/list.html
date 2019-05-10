@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+
+{% block body %}
+	<div id="left">
+		<div id="place">
+			<strong>你的位置：</strong>
+            <a href="/index" title="半月文章网">首页</a>&nbsp;>&nbsp;
+            <a href="/list/{{ type.id }}/1" title="{{ type.type }}">{{ type.type }}</a>
+		</div>
+		<!--<ul class="subnav">-->
+            <!--<li><a href="/list-20-0.html" title="爱情文章">爱情文章</a></li>-->
+            <!--<li><a href="/list-21-0.html" title="亲情文章">亲情文章</a></li><-->
+            <!--li><a href="/list-22-0.html" title="友情文章">友情文章</a></li><-->
+            <!--li><a href="/list-23-0.html" title="心情文章">心情文章</a></li>-->
+            <!--<li><a href="/list-24-0.html" title="励志文章">励志文章</a></li>-->
+            <!--<li><a href="/list-25-0.html" title="节日文章">节日文章</a></li>-->
+            <!--<li><a href="/list-26-0.html" title="校园文章">校园文章</a></li>-->
+            <!--<li><a href="/list-27-0.html" title="百家杂谈">百家杂谈</a></li>-->
+        <!--</ul>-->
+
+
+
+		<div id="lieb">
+            {% for article in articles_page  %}
+			<dl>
+
+	            <dt>
+                    <span><a target="_blank" href="/detail/{{ article.id }}" title="的文章">节日文章</a></span>
+	            <h2>
+                    <a target="_blank" href="/detail/{{ article.id }} " title="{{ article.title }}">{{ article.title }}</a>
+                </h2>
+	            </dt>
+	        <dd>
+	            <div id="zi1">
+		            <p><a target="_blank" href="#">{{ article.detail|safe }}</a></p>
+	            </div>
+
+	            <p class="tags">{{ article.create_time }} | 阅读：<span>{{ article.readcount }}</span> | 标签：
+					{% for tag in article.read_tag_info.all %}
+                    <a href='/tag/{{ tag.read_tag }}/1' target='_blank' title='{{ tag.read_tag }}' rel='tag'>{{ tag.read_tag }}</a>&nbsp;
+					{% endfor %}
+	        </dd>
+                <div class="clear"></div>
+
+            </dl>
+            {% endfor %}
+
+
+
+
+			<dl class="pagebar">
+
+               {% if articles_page.has_previous %}
+				<a href="{% url 'index:list' type.id articles_page.previous_page_number %}">上一页></a>
+				{% endif %}
+				{% for pindex in articles_page.paginator.page_range %}
+
+					{% if pindex == articles_page.number %}
+						<a href="{% url 'index:list' type.id pindex %}" class="active">{{ pindex }}</a>
+					{% else %}
+						<a href="{% url 'index:list' type.id pindex %}">{{ pindex }}</a>
+					{% endif %}
+				{% endfor %}
+				{% if articles_page.has_next %}
+				<a href="{% url 'index:list' type.id articles_page.next_page_number %}">下一页></a>
+				{% endif %}
+            </dl>
+		</div>
+	</div>
+
+
+
+{% endblock body %}
